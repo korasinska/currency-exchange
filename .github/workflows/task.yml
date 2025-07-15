@@ -1,0 +1,39 @@
+name: Uruchom codzienny skrypt
+
+on:
+  schedule:
+    - cron: '30 6 * * *'   # 6:00 UTC = 8:00 CEST
+  workflow_dispatch:  # pozwala też odpalać ręcznie
+
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    env:  # <- tu przekazujesz secret jako zmienną środowiskową
+      FROM_EMAIL_PASSWORD: ${{ secrets.FROM_EMAIL_PASSWORD }}
+      FROM_EMAIL_ADDRESS: ${{ secrets.FROM_EMAIL_ADDRESS }}
+      TO_EMAIL: ${{ secrets.TO_EMAIL }}
+      SAVINGS: ${{ secrets.SAVINGS }}
+      URL: ${{ secrets.URL }}
+
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Zainstaluj Pythona
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Zainstaluj requests
+      run: pip install requests
+
+    - name: Zainstaluj bs4
+      run: pip install bs4
+
+    - name: Zainstaluj zależności (jeśli masz requirements.txt)
+      run: |
+        pip install -r requirements.txt || true
+
+    - name: Uruchom skrypt
+      run: python main.py
