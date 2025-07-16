@@ -2,7 +2,7 @@ name: Uruchom codzienny skrypt
 
 on:
   schedule:
-    - cron: '30 6 * * *'   # 6:00 UTC = 8:00 CEST
+    - cron: '30 7 * * *'   # 6:00 UTC = 8:00 CEST
   workflow_dispatch:  # pozwala też odpalać ręcznie
 
 
